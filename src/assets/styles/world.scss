@@ -16,19 +16,23 @@
         @extend %absolute-center;
         display: flex;
         justify-content: space-around;
-        width: 700px;
+        width: 50%;
         height: 100%;
         .splash-text-box {
             display: flex;
             width: 50%;
+            min-width: 500px;
             height: 50%;
-            justify-content: space-around;
+            justify-content: space-between;
             .splash-text {
                 position: relative;
                 opacity: 0;
                 height: 0px;
-                font-size: 26px;
-                font-weight: 900px;
+                font-size: 56px;
+                font-weight: bold;
+            }
+            .splash-point {
+                opacity: 0;
             }
         }
     }

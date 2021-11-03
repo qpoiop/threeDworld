@@ -6,10 +6,10 @@ import { ThreeDWorld } from '../components/threeDworld'
 const Splash = ({onComplete}) => {
     const splashRef = useRef([])
     const q = gsap.utils.selector(splashRef)
-    const tl = useRef()
+    const t = useRef()
           
     useLayoutEffect(() => {
-        tl.current = gsap.timeline({
+        t.current = gsap.timeline({
             repeat: 0,
             onComplete: () => { setTimeout(onComplete, 1500) }
         }).to(q('.splash-text'), {
@@ -17,11 +17,13 @@ const Splash = ({onComplete}) => {
             yoyo: false,
             opacity: 1,
             y: splashRef.current.clientHeight/2
-        }).to(q('.splash-text.point'), {
+        }).to(q('.splash-point'), {
+            duration: 0.7,
             color: '#32b9a0',
-            fontSize: '40px',
+            fontSize: '90px',
+            opacity: 1,
             fontWeight: 'bold',
-            y: splashRef.current.clientHeight/2 -10
+            y: splashRef.current.clientHeight/2 -30
         })
     })
 
@@ -33,7 +35,7 @@ const Splash = ({onComplete}) => {
                 <span className="splash-text"> R </span>
                 <span className="splash-text"> E </span>
                 <span className="splash-text"> E </span>
-                <span className="splash-text point"> D </span>
+                <span className="splash-point"> D </span>
                 <span className="splash-text"> W </span>
                 <span className="splash-text"> O </span>
                 <span className="splash-text"> R </span>
@@ -44,34 +46,24 @@ const Splash = ({onComplete}) => {
     )
 }
 
-const Field = () => {
-    useLayoutEffect(() => {
-        new ThreeDWorld()
-    })
-    return (
-        <div></div>
-    )
-}
-
 export const Intro = () => {
     const world = useRef()
     const [active, setActive] = useState(true)
+    const splashCompleted = () => setActive(false)
     
     useEffect(() => {
-        console.log("SPLASH IS ACTIVE = ", active)
         if (!active) {
             gsap.to(world.current, {
-                duration: 0.5,
-                backgroundColor: "#f8f8f8"
+                duration: 1.5,
+                backgroundColor: "#000000"
             })
+            new ThreeDWorld()
         }
     }, [active])
 
-    const splashCompleted = () => setActive(false)
-    
     return (
-        <div className="world" ref={world}> 
-            {active ? <Splash onComplete={splashCompleted} /> : <Field /> }
+        <div id="world" className="world" ref={world}> 
+            {active ? <Splash onComplete={splashCompleted} /> : null }
         </div>
     )
 }
