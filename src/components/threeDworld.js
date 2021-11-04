@@ -140,6 +140,7 @@ export class ThreeDWorld {
         this.scene.add( blueLight )
 
         window.addEventListener( 'resize', this.onWindowResize.bind(this) )
+        window.addEventListener( 'keyup', this.onKeyup.bind(this) )
         window.addEventListener( 'keydown', this.onKeydown.bind(this) )
         this.animate()
     }
@@ -149,6 +150,9 @@ export class ThreeDWorld {
         this.camera.updateProjectionMatrix();
 
         this.renderer.setSize( this.SCREEN_WIDTH, this.SCREEN_HEIGHT )
+    }
+    onKeyup(e) {
+
     }
     onKeydown(e) {
         let keyCode = e.which, xSpeed = 1, zSpeed = 3
@@ -163,6 +167,7 @@ export class ThreeDWorld {
             this.smallSphere.position.x -= xSpeed
         } else if (keyCode === 32) {
             this.smallSphere.position.set(0, 0, 0)
+
         }
         // console.log("keyCode", keyCode)
         // console.log("POSITION CHANGED", this.smallSphere.position)
