@@ -40,13 +40,16 @@ export class ThreeDWorld {
         controls.enableZoom = false
         controls.enablePan = false
         controls.enableDamping = false
-        controls.enabledRotate = false
+        controls.enabledRotate = true
         controls.keyPanSpeed = 7.0
-        controls.panSpeed = 0.5
-        // controls.maxDistance = 0
-        // controls.maxPolarAngle = 0
-        // controls.maxDistance = 400
-        // controls.minDistance = 10
+        controls.panSpeed = 0.1
+        controls.maxDistance = 500
+        // controls.maxAzimuthAngle = 3.2
+        controls.maxAzimuthAngle = Infinity
+        // controls.minAzimuthAngle = 3.1
+        controls.maxPolarAngle = 1.6
+        controls.minPolarAngle = 1.5
+        controls.minDistance = 100
 
         controls.update()
 
@@ -120,23 +123,24 @@ export class ThreeDWorld {
         backLight.position.z = -500
         // this.scene.add( backLight )
 
-        const mainLight = new THREE.PointLight( 0xcccccc, 1.5, 250 )
+        const mainLight = new THREE.PointLight( 0xcccccc, 1.5, 300 )
         mainLight.position.y = 60
         this.scene.add( mainLight )
 
-        const greenLight = new THREE.PointLight( 0x00ff00, 0.25, 1000 )
+        const greenLight = new THREE.PointLight( 0x00ff00, 0.5, 1200 )
         greenLight.position.set( 550, 50, 0 )
         this.scene.add( greenLight )
 
-        const redLight = new THREE.PointLight( 0xff0000, 0.25, 1000 )
+        const redLight = new THREE.PointLight( 0xff0000, 0.5, 1200 )
         redLight.position.set( - 550, 50, 0 )
         this.scene.add( redLight )
 
-        const blueLight = new THREE.PointLight( 0x7f7fff, 0.25, 1000 )
+        const blueLight = new THREE.PointLight( 0x7f7fff, 0.5, 1200 )
         blueLight.position.set( 0, 50, 550 )
         this.scene.add( blueLight )
 
-        window.addEventListener( 'resize', this.onWindowResize )
+        window.addEventListener( 'resize', this.onWindowResize.bind(this) )
+        window.addEventListener( 'keydown', this.onKeydown.bind(this) )
         this.animate()
     }
 
@@ -146,17 +150,35 @@ export class ThreeDWorld {
 
         this.renderer.setSize( this.SCREEN_WIDTH, this.SCREEN_HEIGHT )
     }
+    onKeydown(e) {
+        let keyCode = e.which, xSpeed = 1, zSpeed = 3
+
+        if (keyCode === 87) {
+            this.smallSphere.position.z += zSpeed
+        } else if (keyCode === 83) {
+            this.smallSphere.position.z -= zSpeed
+        } else if (keyCode === 65) {
+            this.smallSphere.position.x += xSpeed
+        } else if (keyCode === 68) {
+            this.smallSphere.position.x -= xSpeed
+        } else if (keyCode === 32) {
+            this.smallSphere.position.set(0, 0, 0)
+        }
+        // console.log("keyCode", keyCode)
+        // console.log("POSITION CHANGED", this.smallSphere.position)
+    }
 
     animate() {
-        requestAnimationFrame( ()=> this.animate() )
+        requestAnimationFrame( () => this.animate() )
         const time = this.clock.getElapsedTime()
         this.refractor.material.uniforms.time.value = time
 
-        this.smallSphere.position.set(
-            Math.cos( time ) * 30,
-            Math.abs( Math.cos( time * 2 ) ) * 20 + 5,
-            Math.sin( time ) * 30
-        )
+        // this.smallSphere.position.set(
+        //     Math.cos( time ) * 30,
+        //     Math.abs( Math.cos( time * 2 ) ) * 20 + 5,
+        //     Math.sin( time ) * 30
+        // )
+        this.smallSphere.position.y = Math.abs( Math.cos( time * 3 ) ) * 50 + 5
         this.smallSphere.rotation.y = ( Math.PI / 2 ) - time
         this.smallSphere.rotation.z = time * 8
 

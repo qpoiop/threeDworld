@@ -48,7 +48,7 @@ const Splash = ({onComplete}) => {
 
 export const Intro = () => {
     const world = useRef()
-    const [active, setActive] = useState(true)
+    const [active, setActive] = useState(false)
     const splashCompleted = () => setActive(false)
     
     useEffect(() => {
